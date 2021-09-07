@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/Pages/home.dart';
 
+import 'Pages/friends.dart';
+
 FirebaseAuth auth = FirebaseAuth.instance;
 CollectionReference users = FirebaseFirestore.instance.collection('users');
 CollectionReference posts = FirebaseFirestore.instance.collection('posts');
@@ -21,6 +23,8 @@ void main() async {
       '/': (context) => LoginPage(),
       // When navigating to the "/second" route, build the SecondScreen widget.
       '/myHomePage': (context) => MyHomePage(
+          title: "Lil Social Network", uid: auth.currentUser!.uid.toString()),
+      '/friends': (context) => friendsPage(
           title: "Lil Social Network", uid: auth.currentUser!.uid.toString()),
     },
   ));

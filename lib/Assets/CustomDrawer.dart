@@ -11,6 +11,12 @@ class CustomDrawer extends StatelessWidget {
         child: ListView(
       children: [
         TextButton(onPressed: () {}, child: Text("Home")),
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, "/friends");
+            },
+            child: Text("Friends")),
         TextButton(onPressed: () {}, child: Text("Settings"))
       ],
     ));
