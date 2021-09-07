@@ -27,6 +27,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   CollectionReference posts = FirebaseFirestore.instance.collection('posts');
   TextEditingController newPost = new TextEditingController();
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: TextButton(
                 onPressed: () {
                   posts.add({
-                    'uid': widget.uid,
+                    'username': auth.currentUser!.displayName.toString(),
                     'date': DateTime.now(),
                     'post': newPost.text
                   });
@@ -103,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           return new Card(
                             child: Column(
                               children: [
-                                Text(document.get('uid')),
+                                Text(document.get('username')),
                                 Text(document.get('post')),
                                 Text(document.get('date').toString()),
                               ],
