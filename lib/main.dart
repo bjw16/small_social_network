@@ -75,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController password = new TextEditingController();
   TextEditingController username = new TextEditingController();
   TextEditingController age = new TextEditingController();
+  bool keepLoggedOn = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -95,6 +96,11 @@ class _LoginPageState extends State<LoginPage> {
               controller: password,
               decoration: InputDecoration(hintText: "Password: "),
             ),
+            Checkbox(
+                value: keepLoggedOn,
+                onChanged: (bool? value) => setState(() {
+                      keepLoggedOn = value!;
+                    })),
             TextButton(
                 child: Text(
                   "Register",
@@ -180,6 +186,7 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               onPressed: () {
                 bool nextPage = true;
+
                 try {
                   auth
                       .signInWithEmailAndPassword(
