@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/Assets/CustomDrawer.dart';
+import 'package:intl/intl.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title, required this.uid})
@@ -101,12 +102,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         itemBuilder: (context, index) {
                           final DocumentSnapshot document =
                               snapshot.data!.docs[index];
+                          Timestamp printTimestamp = document.get('date');
+                          DateTime printDate = printTimestamp.toDate();
                           return new Card(
                             child: Column(
                               children: [
                                 Text(document.get('username')),
                                 Text(document.get('post')),
-                                Text(document.get('date').toString()),
+                                Text(new DateFormat('dd-MM-yyyy - ')
+                                    .add_jm()
+                                    .format(printDate)),
                               ],
                             ),
                           );
