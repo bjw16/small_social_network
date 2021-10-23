@@ -63,7 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
           Flexible(
             child: TextFormField(
               controller: newPost,
-              decoration: InputDecoration(hintText: "Write a post!"),
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 20),
+                  hintText: "Write a post!"),
             ),
           ),
           Flexible(

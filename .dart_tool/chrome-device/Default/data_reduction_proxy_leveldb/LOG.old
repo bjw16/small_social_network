@@ -1,6 +1,7 @@
-2021/10/18-00:22:17.337 8b03 Creating DB /private/var/folders/nc/tzs88zcx48z5mr0pk64js4880000gn/T/flutter_tools.sKGlIV/flutter_tools_chrome_device.D1Skaa/Default/data_reduction_proxy_leveldb since it was missing.
-2021/10/18-00:22:17.413 8b03 Recovering log #3
-2021/10/18-00:22:17.413 8b03 Recovering log #5
-2021/10/18-00:22:17.488 8b03 Delete type=0 #5
-2021/10/18-00:22:17.490 8b03 Delete type=0 #3
-2021/10/18-00:22:17.490 8b03 Delete type=3 #1
+2021/10/22-22:58:54.074 1b333 Recovering log #8
+2021/10/22-22:58:54.137 1b333 Delete type=0 #6
+2021/10/22-22:58:54.137 1b333 Delete type=0 #5
+2021/10/22-22:58:54.137 1b333 Delete type=0 #3
+2021/10/22-22:58:54.137 1b333 Delete type=3 #7
+2021/10/22-22:58:54.137 1b333 Delete type=3 #2
+2021/10/22-22:58:54.138 1b333 Delete type=0 #8

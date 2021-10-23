@@ -86,128 +86,179 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Color(0xAA01E12D),
           title: new Text("Social Network Login"),
         ),
-        body: ListView(
-          children: [
-            TextField(
-              controller: email,
-              decoration: InputDecoration(hintText: "Email:"),
-            ),
-            TextField(
-              controller: password,
-              decoration: InputDecoration(hintText: "Password: "),
-            ),
-            Checkbox(
-                value: keepLoggedOn,
-                onChanged: (bool? value) => setState(() {
-                      keepLoggedOn = value!;
-                    })),
-            TextButton(
-                child: Text(
-                  "Register",
-                  style: TextStyle(color: Colors.black),
+        body: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width / 2,
+            height: MediaQuery.of(context).size.height / 2,
+            padding: EdgeInsets.fromLTRB(40, 40, 40, 40),
+            child: ListView(
+              children: [
+                TextField(
+                  controller: email,
+                  decoration: InputDecoration(hintText: "Email:"),
                 ),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Container(
-                            height: 500,
-                            width: 500,
-                            child: Form(
-                              key: _formKey,
-                              child: ListView(
-                                children: [
-                                  TextField(
-                                    controller: email,
-                                    decoration:
-                                        InputDecoration(hintText: "Email:"),
-                                  ),
-                                  TextField(
-                                    controller: password,
-                                    decoration:
-                                        InputDecoration(hintText: "Password: "),
-                                  ),
-                                  TextField(
-                                    controller: username,
-                                    decoration:
-                                        InputDecoration(hintText: "username: "),
-                                  ),
-                                  TextField(
-                                    controller: age,
-                                    decoration:
-                                        InputDecoration(hintText: "age: "),
-                                  ),
-                                  TextButton(
-                                    child: Text(
-                                      "Register",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        try {
-                                          auth
-                                              .createUserWithEmailAndPassword(
-                                                  email: email.text,
-                                                  password: password.text)
-                                              .then((res) => {
-                                                    auth.currentUser!
-                                                        .updateDisplayName(
-                                                            username.text),
-                                                    addUser(),
-                                                    Navigator.pushNamed(
-                                                        context, "/myHomePage")
-                                                  });
-                                        } on FirebaseAuthException catch (e) {
-                                          if (e.code == 'weak-password') {
-                                            print(
-                                                'The password provided is too weak.');
-                                          } else if (e.code ==
-                                              'email-already-in-use') {
-                                            print(
-                                                'The account already exists for that email.');
-                                          }
-                                        } catch (e) {
-                                          print(e);
-                                          return;
-                                        }
-                                        Navigator.pushNamed(
-                                            context, "/myHomePage");
-                                      }
-                                    },
-                                  )
-                                ],
-                              ),
-                            ),
+                TextField(
+                  controller: password,
+                  decoration: InputDecoration(hintText: "Password: "),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.pressed))
+                                return Color(0xAA01E12D);
+                              return Color(
+                                  0xAA01E12D); //Use the component's default.
+                            },
                           ),
-                        );
-                      });
-                }),
-            TextButton(
-              onPressed: () {
-                bool nextPage = true;
+                        ),
+                        child: Text(
+                          "Register",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Container(
+                                    height: 500,
+                                    width: 500,
+                                    child: Form(
+                                      key: _formKey,
+                                      child: ListView(
+                                        children: [
+                                          TextField(
+                                            controller: email,
+                                            decoration: InputDecoration(
+                                                hintText: "Email:"),
+                                          ),
+                                          TextField(
+                                            controller: password,
+                                            decoration: InputDecoration(
+                                                hintText: "Password: "),
+                                          ),
+                                          TextField(
+                                            controller: username,
+                                            decoration: InputDecoration(
+                                                hintText: "username: "),
+                                          ),
+                                          TextField(
+                                            controller: age,
+                                            decoration: InputDecoration(
+                                                hintText: "age: "),
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              "Register",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                try {
+                                                  auth
+                                                      .createUserWithEmailAndPassword(
+                                                          email: email.text,
+                                                          password:
+                                                              password.text)
+                                                      .then((res) => {
+                                                            auth.currentUser!
+                                                                .updateDisplayName(
+                                                                    username
+                                                                        .text),
+                                                            addUser(),
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                "/myHomePage")
+                                                          });
+                                                } on FirebaseAuthException catch (e) {
+                                                  if (e.code ==
+                                                      'weak-password') {
+                                                    print(
+                                                        'The password provided is too weak.');
+                                                  } else if (e.code ==
+                                                      'email-already-in-use') {
+                                                    print(
+                                                        'The account already exists for that email.');
+                                                  }
+                                                } catch (e) {
+                                                  print(e);
+                                                  return;
+                                                }
+                                                Navigator.pushNamed(
+                                                    context, "/myHomePage");
+                                              }
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        }),
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.pressed))
+                              return Color(0xAA01E12D);
+                            return Color(
+                                0xAA01E12D); //Use the component's default.
+                          },
+                        ),
+                      ),
+                      onPressed: () {
+                        bool nextPage = true;
 
-                try {
-                  auth
-                      .signInWithEmailAndPassword(
-                          email: email.text, password: password.text)
-                      .then((value) =>
-                          Navigator.pushNamed(context, "/myHomePage"));
-                } on FirebaseAuthException catch (e) {
-                  nextPage = false;
-                  if (e.code == 'user-not-found') {
-                    print('No user found for that email.');
-                  } else if (e.code == 'wrong-password') {
-                    print('Wrong password provided for that user.');
-                  }
-                }
-              },
-              child: Text(
-                "Login",
-                style: TextStyle(color: Colors.black),
-              ),
-            )
-          ],
+                        try {
+                          auth
+                              .signInWithEmailAndPassword(
+                                  email: email.text, password: password.text)
+                              .then((value) =>
+                                  Navigator.pushNamed(context, "/myHomePage"));
+                        } on FirebaseAuthException catch (e) {
+                          nextPage = false;
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        }
+                      },
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    Checkbox(
+                        value: keepLoggedOn,
+                        onChanged: (bool? value) => setState(() {
+                              keepLoggedOn = value!;
+                            })),
+                  ],
+                )
+              ],
+            ),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    spreadRadius: 1,
+                    blurRadius: 9,
+                    offset: Offset(0, 0), // changes position of shadow
+                  ),
+                ]),
+          ),
         ));
   }
 
