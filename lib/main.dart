@@ -17,10 +17,10 @@ void main() async {
     title: 'Social Network',
     // Start the app with the "/" named route. In this case, the app starts
     // on the FirstScreen widget.
-    initialRoute: '/',
+    initialRoute: (auth.currentUser != null) ? '/myHomePage' : '/',
     routes: {
       // When navigating to the "/" route, build the FirstScreen widget.
-      '/': (context) => LoginPage(),
+      '/': (context) => (LoginPage()),
       // When navigating to the "/second" route, build the SecondScreen widget.
       '/myHomePage': (context) => MyHomePage(
           title: "Lil Social Network", uid: auth.currentUser!.uid.toString()),
@@ -242,6 +242,7 @@ class _LoginPageState extends State<LoginPage> {
                         value: keepLoggedOn,
                         onChanged: (bool? value) => setState(() {
                               keepLoggedOn = value!;
+                              if (value == true) {}
                             })),
                   ],
                 )
