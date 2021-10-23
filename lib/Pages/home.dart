@@ -59,87 +59,90 @@ class _MyHomePageState extends State<MyHomePage> {
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body: Center(
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    spreadRadius: 1,
-                    blurRadius: 9,
-                    offset: Offset(0, 0), // changes position of shadow
-                  ),
-                ]),
-            width: MediaQuery.of(context).size.width / 2,
-            height: MediaQuery.of(context).size.height,
-            child: Column(children: [
-              Flexible(
-                child: TextFormField(
-                  controller: newPost,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 20),
-                      hintText: "Write a post!"),
-                ),
-              ),
-              TextButton(
-                  onPressed: () {
-                    posts.add({
-                      'date': DateTime.now(),
-                      'post': newPost.text,
-                      'username': auth.currentUser!.displayName.toString(),
-                    });
-                    setState(() {
-                      posts = FirebaseFirestore.instance.collection('posts');
-                      newPost = new TextEditingController();
-                    });
-                  },
-                  child: Text("Send Posts")),
-              //List of Post
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: posts.snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          // count of events
-                          int eventCount = 5;
-                          if (snapshot.hasData)
-                            eventCount = snapshot.data!.size;
-                          else if (snapshot.hasError)
-                            return new Text('Error: ${snapshot.error}');
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                              return Center(child: CircularProgressIndicator());
-                            default:
-                              return new ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: eventCount,
-                                  itemBuilder: (context, index) {
-                                    final DocumentSnapshot document =
-                                        snapshot.data!.docs[index];
-                                    Timestamp printTimestamp =
-                                        document.get('date');
-                                    DateTime printDate =
-                                        printTimestamp.toDate();
-                                    return new Card(
-                                      child: Column(
-                                        children: [
-                                          Text(document.get('username')),
-                                          Text(document.get('post')),
-                                          Text(new DateFormat('dd-MM-yyyy - ')
-                                              .add_jm()
-                                              .format(printDate)),
-                                        ],
-                                      ),
-                                    );
-                                  });
-                          }
-                        }),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 1,
+                      blurRadius: 9,
+                      offset: Offset(0, 0), // changes position of shadow
+                    ),
                   ]),
-            ]),
+              width: MediaQuery.of(context).size.width / 2,
+              child: Column(children: [
+                Flexible(
+                  child: TextFormField(
+                    controller: newPost,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 20),
+                        hintText: "Write a post!"),
+                  ),
+                ),
+                TextButton(
+                    onPressed: () {
+                      posts.add({
+                        'date': DateTime.now(),
+                        'post': newPost.text,
+                        'username': auth.currentUser!.displayName.toString(),
+                      });
+                      setState(() {
+                        posts = FirebaseFirestore.instance.collection('posts');
+                        newPost = new TextEditingController();
+                      });
+                    },
+                    child: Text("Send Posts")),
+                //List of Post
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      StreamBuilder<QuerySnapshot>(
+                          stream: posts.snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            // count of events
+                            int eventCount = 5;
+                            if (snapshot.hasData)
+                              eventCount = snapshot.data!.size;
+                            else if (snapshot.hasError)
+                              return new Text('Error: ${snapshot.error}');
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              default:
+                                return new ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: eventCount,
+                                    itemBuilder: (context, index) {
+                                      final DocumentSnapshot document =
+                                          snapshot.data!.docs[index];
+                                      Timestamp printTimestamp =
+                                          document.get('date');
+                                      DateTime printDate =
+                                          printTimestamp.toDate();
+                                      return new Card(
+                                        child: Column(
+                                          children: [
+                                            Text(document.get('username')),
+                                            Text(document.get('post')),
+                                            Text(new DateFormat('dd-MM-yyyy - ')
+                                                .add_jm()
+                                                .format(printDate)),
+                                          ],
+                                        ),
+                                      );
+                                    });
+                            }
+                          }),
+                    ]),
+              ]),
+            ),
           ),
         ));
   }
