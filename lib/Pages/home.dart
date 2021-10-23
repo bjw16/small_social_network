@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       StreamBuilder<QuerySnapshot>(
-                          stream: posts.snapshots(),
+                          stream: posts.limit(20).snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             // count of events
@@ -125,13 +125,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Timestamp printTimestamp =
                                           document.get('date');
                                       DateTime printDate =
-                                          printTimestamp.toDate();
+                                          printTimestamp.toDate().toUtc();
                                       return new Card(
                                         child: Column(
                                           children: [
                                             Text(document.get('username')),
                                             Text(document.get('post')),
-                                            Text(new DateFormat('dd-MM-yyyy - ')
+                                            Text(new DateFormat('MM-dd-yyyy - ')
                                                 .add_jm()
                                                 .format(printDate)),
                                           ],

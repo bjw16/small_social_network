@@ -7,6 +7,7 @@ import 'package:myapp/Pages/home.dart';
 
 import 'Pages/friends.dart';
 
+Future<FirebaseApp> firebaseApp = Firebase.initializeApp();
 FirebaseAuth auth = FirebaseAuth.instance;
 CollectionReference users = FirebaseFirestore.instance.collection('users');
 CollectionReference posts = FirebaseFirestore.instance.collection('posts');
@@ -75,7 +76,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController password = new TextEditingController();
   TextEditingController username = new TextEditingController();
   TextEditingController age = new TextEditingController();
-  bool keepLoggedOn = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -105,17 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.pressed))
-                                return Color(0xAA01E12D);
-                              return Color(
-                                  0xAA01E12D); //Use the component's default.
-                            },
-                          ),
-                        ),
                         child: Text(
                           "Register",
                           style: TextStyle(color: Colors.black),
@@ -204,17 +193,6 @@ class _LoginPageState extends State<LoginPage> {
                               });
                         }),
                     TextButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.pressed))
-                              return Color(0xAA01E12D);
-                            return Color(
-                                0xAA01E12D); //Use the component's default.
-                          },
-                        ),
-                      ),
                       onPressed: () {
                         bool nextPage = true;
 
@@ -222,8 +200,10 @@ class _LoginPageState extends State<LoginPage> {
                           auth
                               .signInWithEmailAndPassword(
                                   email: email.text, password: password.text)
-                              .then((value) =>
-                                  Navigator.pushNamed(context, "/myHomePage"));
+                              .then((value) => {
+                                    auth.setPersistence(Persistence.LOCAL),
+                                    Navigator.pushNamed(context, "/myHomePage")
+                                  });
                         } on FirebaseAuthException catch (e) {
                           nextPage = false;
                           if (e.code == 'user-not-found') {
@@ -238,12 +218,6 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    Checkbox(
-                        value: keepLoggedOn,
-                        onChanged: (bool? value) => setState(() {
-                              keepLoggedOn = value!;
-                              if (value == true) {}
-                            })),
                   ],
                 )
               ],
