@@ -70,9 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
             child: TextButton(
                 onPressed: () {
                   posts.add({
-                    'username': auth.currentUser!.displayName.toString(),
                     'date': DateTime.now(),
-                    'post': newPost.text
+                    'post': newPost.text,
+                    'username': auth.currentUser!.displayName.toString(),
                   });
                   setState(() {
                     posts = FirebaseFirestore.instance.collection('posts');
