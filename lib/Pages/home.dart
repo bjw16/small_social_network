@@ -75,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ]),
               width: MediaQuery.of(context).size.width / 2,
+              height: MediaQuery.of(context).size.height - 50,
               child: Column(children: [
                 TextFormField(
                   controller: newPost,
@@ -96,49 +97,49 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     child: Text("Send Posts")),
                 //List of Post
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      StreamBuilder<QuerySnapshot>(
-                          stream: posts.limit(20).snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            // count of events
-                            int eventCount = 5;
-                            if (snapshot.hasData)
-                              eventCount = snapshot.data!.size;
-                            else if (snapshot.hasError)
-                              return new Text('Error: ${snapshot.error}');
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.waiting:
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              default:
-                                return new ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: eventCount,
-                                    itemBuilder: (context, index) {
-                                      final DocumentSnapshot document =
-                                          snapshot.data!.docs[index];
-                                      Timestamp printTimestamp =
-                                          document.get('date');
-                                      DateTime printDate =
-                                          printTimestamp.toDate().toUtc();
-                                      return new Card(
-                                        child: Column(
-                                          children: [
-                                            Text(document.get('username')),
-                                            Text(document.get('post')),
-                                            Text(new DateFormat('MM-dd-yyyy - ')
-                                                .add_jm()
-                                                .format(printDate)),
-                                          ],
-                                        ),
-                                      );
-                                    });
-                            }
-                          }),
-                    ]),
+                Container(
+                  height: MediaQuery.of(context).size.height - 200,
+                  child: ListView(children: [
+                    StreamBuilder<QuerySnapshot>(
+                        stream: posts.limit(20).snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          // count of events
+                          int eventCount = 5;
+                          if (snapshot.hasData)
+                            eventCount = snapshot.data!.size;
+                          else if (snapshot.hasError)
+                            return new Text('Error: ${snapshot.error}');
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return Center(child: CircularProgressIndicator());
+                            default:
+                              return new ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: eventCount,
+                                  itemBuilder: (context, index) {
+                                    final DocumentSnapshot document =
+                                        snapshot.data!.docs[index];
+                                    Timestamp printTimestamp =
+                                        document.get('date');
+                                    DateTime printDate =
+                                        printTimestamp.toDate().toUtc();
+                                    return new Card(
+                                      child: Column(
+                                        children: [
+                                          Text(document.get('username')),
+                                          Text(document.get('post')),
+                                          Text(new DateFormat('MM-dd-yyyy - ')
+                                              .add_jm()
+                                              .format(printDate)),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                          }
+                        }),
+                  ]),
+                ),
               ]),
             ),
           ),
