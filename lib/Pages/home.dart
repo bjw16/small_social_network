@@ -52,7 +52,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-        drawer: CustomDrawer(),
         appBar: AppBar(
           backgroundColor: Color(0xAA01E12D),
           // Here we take the value from the MyHomePage object that was created by
