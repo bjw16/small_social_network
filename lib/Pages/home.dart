@@ -76,13 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   ]),
               width: MediaQuery.of(context).size.width / 2,
               child: Column(children: [
-                Flexible(
-                  child: TextFormField(
-                    controller: newPost,
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 20),
-                        hintText: "Write a post!"),
-                  ),
+                TextFormField(
+                  controller: newPost,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 20),
+                      hintText: "Write a post!"),
                 ),
                 TextButton(
                     onPressed: () {
