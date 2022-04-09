@@ -101,124 +101,140 @@ class _LoginPageState extends State<LoginPage> {
                   controller: password,
                   decoration: InputDecoration(hintText: "Password: "),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                        child: Text(
-                          "Register",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Container(
-                                    height: 500,
-                                    width: 500,
-                                    child: Form(
-                                      key: _formKey,
-                                      child: ListView(
-                                        children: [
-                                          TextField(
-                                            controller: email,
-                                            decoration: InputDecoration(
-                                                hintText: "Email:"),
-                                          ),
-                                          TextField(
-                                            controller: password,
-                                            decoration: InputDecoration(
-                                                hintText: "Password: "),
-                                          ),
-                                          TextField(
-                                            controller: username,
-                                            decoration: InputDecoration(
-                                                hintText: "username: "),
-                                          ),
-                                          TextField(
-                                            controller: age,
-                                            decoration: InputDecoration(
-                                                hintText: "age: "),
-                                          ),
-                                          TextButton(
-                                            child: Text(
-                                              "Register",
-                                              style: TextStyle(
-                                                  color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.white),
+                          ),
+                          child: Text(
+                            "Register",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Container(
+                                      height: 500 / 3 + 50,
+                                      width: 500 / 2,
+                                      child: Form(
+                                        key: _formKey,
+                                        child: ListView(
+                                          children: [
+                                            TextField(
+                                              controller: email,
+                                              decoration: InputDecoration(
+                                                  hintText: "Email:"),
                                             ),
-                                            onPressed: () {
-                                              if (_formKey.currentState!
-                                                  .validate()) {
-                                                try {
-                                                  auth
-                                                      .createUserWithEmailAndPassword(
-                                                          email: email.text,
-                                                          password:
-                                                              password.text)
-                                                      .then((res) => {
-                                                            auth.currentUser!
-                                                                .updateDisplayName(
-                                                                    username
-                                                                        .text),
-                                                            addUser(),
-                                                            Navigator.pushNamed(
-                                                                context,
-                                                                "/myHomePage")
-                                                          });
-                                                } on FirebaseAuthException catch (e) {
-                                                  if (e.code ==
-                                                      'weak-password') {
-                                                    print(
-                                                        'The password provided is too weak.');
-                                                  } else if (e.code ==
-                                                      'email-already-in-use') {
-                                                    print(
-                                                        'The account already exists for that email.');
+                                            TextField(
+                                              controller: password,
+                                              decoration: InputDecoration(
+                                                  hintText: "Password: "),
+                                            ),
+                                            TextField(
+                                              controller: username,
+                                              decoration: InputDecoration(
+                                                  hintText: "Username: "),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                          Color>(Colors.white),
+                                                ),
+                                                child: Text(
+                                                  "Register",
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                                onPressed: () {
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
+                                                    try {
+                                                      auth
+                                                          .createUserWithEmailAndPassword(
+                                                              email: email.text,
+                                                              password:
+                                                                  password.text)
+                                                          .then((res) => {
+                                                                auth.currentUser!
+                                                                    .updateDisplayName(
+                                                                        username
+                                                                            .text),
+                                                                addUser(),
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    "/myHomePage")
+                                                              });
+                                                    } on FirebaseAuthException catch (e) {
+                                                      if (e.code ==
+                                                          'weak-password') {
+                                                        print(
+                                                            'The password provided is too weak.');
+                                                      } else if (e.code ==
+                                                          'email-already-in-use') {
+                                                        print(
+                                                            'The account already exists for that email.');
+                                                      }
+                                                    } catch (e) {
+                                                      print(e);
+                                                      return;
+                                                    }
+                                                    Navigator.pushNamed(
+                                                        context, "/myHomePage");
                                                   }
-                                                } catch (e) {
-                                                  print(e);
-                                                  return;
-                                                }
-                                                Navigator.pushNamed(
-                                                    context, "/myHomePage");
-                                              }
-                                            },
-                                          )
-                                        ],
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              });
-                        }),
-                    TextButton(
-                      onPressed: () {
-                        bool nextPage = true;
+                                  );
+                                });
+                          }),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+                        onPressed: () {
+                          bool nextPage = true;
 
-                        try {
-                          auth
-                              .signInWithEmailAndPassword(
-                                  email: email.text, password: password.text)
-                              .then((value) => {
-                                    auth.setPersistence(Persistence.LOCAL),
-                                    Navigator.pushNamed(context, "/myHomePage")
-                                  });
-                        } on FirebaseAuthException catch (e) {
-                          nextPage = false;
-                          if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
-                          } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
+                          try {
+                            auth
+                                .signInWithEmailAndPassword(
+                                    email: email.text, password: password.text)
+                                .then((value) => {
+                                      auth.setPersistence(Persistence.LOCAL),
+                                      Navigator.pushNamed(
+                                          context, "/myHomePage")
+                                    });
+                          } on FirebaseAuthException catch (e) {
+                            nextPage = false;
+                            if (e.code == 'user-not-found') {
+                              print('No user found for that email.');
+                            } else if (e.code == 'wrong-password') {
+                              print('Wrong password provided for that user.');
+                            }
                           }
-                        }
-                      },
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.black),
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               ],
             ),
